@@ -2,16 +2,11 @@ using EmpresaEmpleados.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using NLog;
+using System.IO;
 
 namespace EmpresaEmpleados
 {
@@ -19,6 +14,9 @@ namespace EmpresaEmpleados
     {
         public Startup(IConfiguration configuration)
         {
+            // Método LoadConfiguration para proporcionar una ruta al archivo de configuración de Nlog.
+            LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(),"/nlog.config"));
+
             Configuration = configuration;
         }
 
@@ -29,6 +27,7 @@ namespace EmpresaEmpleados
         {
             services.ConfigureCors();
             services.ConfigureIISIntegration();
+            services.ConfigureLoggerService();
             services.AddControllers();
         }
 
