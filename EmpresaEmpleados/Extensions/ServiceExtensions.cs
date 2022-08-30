@@ -1,6 +1,9 @@
 ﻿using Contracts;
+using Entities;
 using LoggerService;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EmpresaEmpleados.Extensions
@@ -27,5 +30,11 @@ namespace EmpresaEmpleados.Extensions
         // Agregado del servicio de logger dentro del Contenedor IOC.
         public static void ConfigureLoggerService(this IServiceCollection services) =>
         services.AddScoped<ILoggerManager, LoggerManager>();
+
+        // Agregado de la clase RepositoryContext en el contenedor IOC
+        public static void ConfigureSqlContext(this IServiceCollection services,
+        IConfiguration configuration) =>
+        services.AddDbContext<RepositoryContext>(opts =>
+        opts.UseSqlServer(configuration.GetConnectionString("sqlConnection")));
     }
 }

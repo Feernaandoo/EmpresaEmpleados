@@ -28,6 +28,7 @@ namespace EmpresaEmpleados
             services.ConfigureCors();
             services.ConfigureIISIntegration();
             services.ConfigureLoggerService();
+            services.ConfigureSqlContext(Configuration);
             services.AddControllers();
         }
 
