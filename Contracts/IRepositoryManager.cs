@@ -6,7 +6,7 @@ namespace Contracts
 {
     public interface IRepositoryManager
     {
-        IEmpleadoRepository Empresa { get; }
+        IEmpresaRepository Empresa { get; }
         IEmpleadoRepository Empleado { get; }
         void Save();
     }

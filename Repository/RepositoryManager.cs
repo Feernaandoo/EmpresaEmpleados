@@ -39,8 +39,6 @@ namespace Repository
             } 
         }
 
-        IEmpleadoRepository IRepositoryManager.Empresa => throw new NotImplementedException();
-
         public void Save() => _repositoryContext.SaveChanges();
     }
 }
