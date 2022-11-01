@@ -1,7 +1,9 @@
 ﻿using Contracts;
+using Entities.DataTransferObjects;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using static System.Collections.Specialized.BitVector32;
 
 namespace EmpresaEmpleados.Controllers
@@ -23,7 +25,14 @@ namespace EmpresaEmpleados.Controllers
             try
             {
                 var empresas = _repository.Empresa.GetAllEmpresas(trackChanges: false);
-                return Ok(empresas);
+
+                var empresasDto = empresas.Select(c => new EmpresaDto
+                {
+                    Id = c.Id,
+                    Nombre = c.Nombre,
+                    DireccionCompleta = string.Join(' ', c.Direccion, c.Pais)
+                }).ToList();
+                return Ok(empresasDto);
             }
             catch (Exception ex)
             {
