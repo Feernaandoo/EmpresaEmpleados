@@ -1,8 +1,10 @@
-﻿using Contracts;
+﻿using AutoMapper;
+using Contracts;
 using Entities.DataTransferObjects;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using static System.Collections.Specialized.BitVector32;
 
@@ -14,11 +16,15 @@ namespace EmpresaEmpleados.Controllers
     {
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
-        public EmpresasController(IRepositoryManager repository, ILoggerManager logger)
+        private readonly IMapper _mapper;
+
+        public EmpresasController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
         {
             _repository = repository;
             _logger = logger;
+            _mapper = mapper;
         }
+
         [HttpGet]
         public IActionResult GetEmpresas()
         {
@@ -26,12 +32,8 @@ namespace EmpresaEmpleados.Controllers
             {
                 var empresas = _repository.Empresa.GetAllEmpresas(trackChanges: false);
 
-                var empresasDto = empresas.Select(c => new EmpresaDto
-                {
-                    Id = c.Id,
-                    Nombre = c.Nombre,
-                    DireccionCompleta = string.Join(' ', c.Direccion, c.Pais)
-                }).ToList();
+                var empresasDto = _mapper.Map<IEnumerable<EmpresaDto>>(empresas);
+             
                 return Ok(empresasDto);
             }
             catch (Exception ex)
